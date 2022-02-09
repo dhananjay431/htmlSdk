@@ -3,19 +3,26 @@ let x = $.cordys.get().val();
     function aj(method, namespace, parameters) {
       const x = method.split('.');
       let z = $.cordys.get().val();
-      z.data = from(
-        $.cordys.ajax({
-          method: x[0],
-          namespace: namespace,
-          dataType: '* json',
-          parameters: parameters,
-          timeout: 1800000,
-        }),
+      z.data = of([]);
+      z.data = tap((d) => {
+        console.log('...start', new Date().getTime());
+      });
+      z.data = mergeMap((d) =>
+        from(
+          $.cordys.ajax({
+            method: x[0],
+            namespace: namespace,
+            dataType: '* json',
+            parameters: parameters,
+            timeout: 1800000,
+          }),
+        ),
       );
       z.data = map((d) => $.cordys.json.find(d, x[1]));
       z.data = catchError((d) => {
         return of({ get: 'err' });
       });
+      z.data = finalize(() => console.log('...end', new Date().getTime()));
       return z.val();
     }
     x.data = aj(
