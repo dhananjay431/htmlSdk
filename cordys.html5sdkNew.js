@@ -673,7 +673,31 @@
         }
         return target;
     }
-
+    function _get() { };
+    _get.prototype.otoa = function (d) {
+        return Array.isArray(d) ? d : [d];
+    }
+    _get.prototype.val = function () {
+        function pp(a, ...b) {
+            return a.pipe(...b);
+        }
+        return {
+            a: [],
+            get data() {
+                return this.a;
+            },
+            set data(d) {
+                this.a.push(d);
+            },
+            val() {
+                let x = this.a;
+                return pp.apply(null, x);
+            },
+        };
+    }
+    $.cordys.get = function () {
+        return new _get();
+    }
     $.cordys.ajax = function (options) {
         var requestStartTime = (new Date()).getTime(); // for handling multiple requests in the login
         var opts = $.extend({}, $.cordys.ajax.defaults);
@@ -712,43 +736,7 @@
         if (typeof (opts.error) === "function") {
             opts.__error = opts.error;
         }
-        opts.error = function (jqXHR, textStatus, errorThrown) {
-            console.log("Error Response received ", jqXHR, jqXHR.fail());
-            var messCode = "",
-                responseText = jqXHR.fail().responseText,
-                responseXML = jqXHR.fail().responseXML;
 
-            //Escaping special characters from response string because of which jquery selector is unable to read it.
-            responseText = responseText.replace(/([#;?%&,.+*~\':"!^$[\]()=><|\/@{\}_])/g, '\\$1');
-
-            if (responseXML) {
-                // check for IE	
-                responseXML = responseXML instanceof Object ? responseXML : responseXML.xml; //NOMBV 
-                messCode = $(responseXML).find("MessageCode").text();
-            }
-            if (!messCode && responseText) {
-                messCode = $(responseText).find("cordys\\:messagecode").text();
-            }
-
-            if (messCode.search(/Cordys.*(AccessDenied|Artifact_Unbound)/) >= 0 || jqXHR.statusText === "Forbidden") {
-                // login to Cordys with cookie reset is true
-                $.cordys.authentication.login(true, requestStartTime, { async: opts.async }).done(function () {	//NOMBV
-                    // reload the page after login success
-                    window.location.reload();
-                });
-            } else {
-                if (!jqXHR.fail().responseText && !jqXHR.fail().responseXML) return;// skip this error, there is no description
-                var showError = true;
-                var errorMessage = $(jqXHR.fail().responseXML).find("faultstring,error elem").text()
-                    || jqXHR.responseText;
-                if (opts.__error && typeof (opts.__error) === "function") {
-                    showError = opts.__error(jqXHR, textStatus, errorThrown, messCode, errorMessage, opts) !== false;
-                }
-                if (showError) {
-                    $.cordys.showMessage(errorMessage, "Error");
-                }
-            }
-        }
 
         // modify the default login url if we have the login url in the request
         if (opts.loginUrl) {
