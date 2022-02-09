@@ -150,3 +150,62 @@ export class AppComponent implements OnInit {
      })
   }
 }
+////////////////////////////////////////////////////
+let x = $.cordys.get().val();
+
+    function aj(method, namespace, parameters) {
+      const x = method.split('.');
+      return from(
+        $.cordys.ajax({
+          method: x[0],
+
+          namespace: namespace,
+
+          dataType: '* json',
+
+          parameters: parameters,
+          timeout: 1800000,
+        }),
+      ).pipe(map((d) => $.cordys.json.find(d, x[1])));
+    }
+    x.data = aj(
+      'Getbsa_UserScreenAccess.bsa_role_access_master',
+      'http://schemas.cordys.com/bsaWsApp',
+      {},
+    );
+    x.data = aj(
+      'Getbsa_UserScreenAccess.bsa_role_access_master',
+      'http://schemas.cordys.com/bsaWsApp',
+      {},
+    );
+    x.data = aj(
+      'Getbsa_UserScreenAccess.bsa_role_access_master',
+      'http://schemas.cordys.com/bsaWsApp',
+      {},
+    );
+    x.data = aj(
+      'Getbsa_UserScreenAccess.bsa_role_access_master',
+      'http://schemas.cordys.com/bsaWsApp',
+      {},
+    );
+    x.data = aj(
+      'Getbsa_UserScreenAccess.bsa_role_access_master',
+      'http://schemas.cordys.com/bsaWsApp',
+      {},
+    );
+    x.data = aj(
+      'Getbsa_UserScreenAccess.bsa_role_access_master',
+      'http://schemas.cordys.com/bsaWsApp',
+      {},
+    );
+    x.data = aj(
+      'Getbsa_UserScreenAccess.bsa_role_access_master',
+      'http://schemas.cordys.com/bsaWsApp',
+      {},
+    );
+    let y = $.cordys.get().val();
+    y.data = forkJoin(x.data);
+    debugger;
+    y.val().subscribe((_) => {
+      console.log('asdfasdfsafsafsafsadfsdfsafsdaf=>', _);
+    });
