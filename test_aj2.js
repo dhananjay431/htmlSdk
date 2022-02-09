@@ -18,7 +18,7 @@ let x = $.cordys.get().val();
           }),
         ),
       );
-      z.data = map((d) => $.cordys.json.find(d, x[1]));
+      z.data = map((d) => (x[1] ? $.cordys.json.find(d, x[1]) : d));
       z.data = catchError((d) => {
         return of({ get: 'err' });
       });
@@ -56,7 +56,7 @@ let x = $.cordys.get().val();
       {},
     );
     x.data = aj(
-      'Getbsa_UserScreenAccess.bsa_role_access_master',
+      'Getbsa_UserScreenAccess',
       'http://schemas.cordys.com/bsaWsApp',
       {},
     );
