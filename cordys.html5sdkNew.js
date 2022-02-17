@@ -888,7 +888,7 @@
 
     function configureGatewayUrl(url, options) {
         if (window.location.href.includes("localhost")) {
-            url += "com.eibus.web.soap.Gateway.wcp";
+            url = "com.eibus.web.soap.Gateway.wcp";
             // var ctCookie = $.cordys.getCookieObject("\\w*_ct");
             // if (ctCookie) {
             //     opts.url = $.cordys.addURLParameter("/com.eibus.web.soap.Gateway.wcp", ctCookie.key, ctCookie.value);
